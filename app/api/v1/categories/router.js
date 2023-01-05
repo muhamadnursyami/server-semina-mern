@@ -23,7 +23,6 @@ router.get(
   "/categories/:id",
   authenticateUser,
   authorizeRoles("organizer"),
-  authorizeRoles("organizer"),
   findIdIndex
 );
 router.put(

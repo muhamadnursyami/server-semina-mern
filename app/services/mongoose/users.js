@@ -8,7 +8,7 @@ const createOrganizer = async (req) => {
   if (password != confirmPassword) {
     throw new BadRequestError("Password and Confirm invalid");
   }
-  const result = await Organizers.create({ organizer });
+  const result = await Organizers.create({ organizer, email });
 
   const users = await Users.create({
     email,
@@ -37,7 +37,13 @@ const createUsers = async (req, res) => {
 
   return result;
 };
+
+const getAllUser = async (req, res) => {
+  const result = await Users.find();
+  return result;
+};
 module.exports = {
   createOrganizer,
   createUsers,
+  getAllUser,
 };
