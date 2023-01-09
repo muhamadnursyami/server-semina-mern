@@ -13,8 +13,9 @@ const eventsRouter = require("./app/api/v1/event/router");
 const organizersRouter = require("./app/api/v1/organizers/router");
 const authCMSRouter = require("./app/api/v1/auth/router");
 const ordersRouter = require("./app/api/v1/orders/router");
+const participantsRouter = require("./app/api/v1/participants/router");
 
-const v1 = "/api/v1/cms";
+const v1 = "/api/v1/";
 
 // error Handling
 const notFoundMiddleware = require("./app/middlewares/not-found");
@@ -32,13 +33,14 @@ app.get("/", (req, res) => {
   });
 });
 // penggunaan router
-app.use(v1, categoriesRouter);
-app.use(v1, imageRouter);
-app.use(v1, talentsRouter);
-app.use(v1, eventsRouter);
-app.use(v1, organizersRouter);
-app.use(v1, authCMSRouter);
-app.use(v1, ordersRouter);
+app.use(`${v1}/cms`, categoriesRouter);
+app.use(`${v1}/cms`, imageRouter);
+app.use(`${v1}/cms`, talentsRouter);
+app.use(`${v1}/cms`, eventsRouter);
+app.use(`${v1}/cms`, organizersRouter);
+app.use(`${v1}/cms`, authCMSRouter);
+app.use(`${v1}/cms`, ordersRouter);
+app.use(`${v1}`, participantsRouter);
 
 // pengunaan error handling, tidak di bolehin di tarok di atas router, karena nanti dijalankan terlebih dahulu.
 app.use(notFoundMiddleware);

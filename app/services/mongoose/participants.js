@@ -43,4 +43,29 @@ const signupParticipant = async (req) => {
   return result;
 };
 
-module.exports = { signupParticipant };
+const activateParticipant = async (req) => {
+  const { otp, email } = req.body;
+  const check = await Participant.findOne({
+    email,
+  });
+
+  if (!check) throw new NotFoundError("Partisipan belum terdaftar");
+
+  if (check && check.otp !== otp) throw new BadRequestError("Kode otp salah");
+
+  // kemudian kita ambil berdasarkan idnya,dengan cara lain nya yaitu : check._id , terus kita update statusnya
+  // menjadi aktif
+  const result = await Participant.findByIdAndUpdate(
+    check._id,
+    {
+      status: "aktif",
+    },
+    { new: true } // untuk mengubah status nya secara real time, jika tidak mempan, pada saat tidak menggunakan ini.
+  );
+
+  delete result._doc.password; // menghapus password agar tidak nampil.
+
+  return result;
+};
+
+module.exports = { signupParticipant, activateParticipant };
