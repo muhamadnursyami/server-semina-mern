@@ -15,7 +15,7 @@ const authCMSRouter = require("./app/api/v1/auth/router");
 const ordersRouter = require("./app/api/v1/orders/router");
 const participantsRouter = require("./app/api/v1/participants/router");
 
-const v1 = "/api/v1/";
+const v1 = "/api/v1";
 
 // error Handling
 const notFoundMiddleware = require("./app/middlewares/not-found");

@@ -1,4 +1,6 @@
 const Participant = require("../../api/v1/participants/model");
+const Events = require("../../api/v1/event/model");
+
 const {
   BadRequestError,
   NotFoundError,
@@ -70,6 +72,7 @@ const activateParticipant = async (req) => {
   return result;
 };
 
+// Login Participants
 const signinParticipants = async (req) => {
   const { email, password } = req.body;
 
@@ -98,4 +101,31 @@ const signinParticipants = async (req) => {
   return token;
 };
 
-module.exports = { signupParticipant, activateParticipant, signinParticipants };
+// kita mau ambil event yang status nya itu publish
+const getAllEvents = async (req) => {
+  // jadi maksudnya kita akan ambil event yang statusnya published, kemudian kita hanya ambil
+  // categorynya dan image, setelah itu kita ambil semua, berupa id title date tickets venueName
+  const result = await Events.find({ statusEvent: "Published" })
+    .populate("category")
+    .populate("image")
+    .select("_id title date tickets venueName");
+  return result;
+};
+
+const getDetailEvent = async (req, res, next) => {
+  const { id } = req.params;
+  const result = await Events.findOne({ _id: id })
+    .populate("category")
+    .populate("talent")
+    .populate("image");
+  if (!result) throw new NotFoundError(`Tidak ada acara dengan id : ${id}`);
+
+  return result;
+};
+module.exports = {
+  signupParticipant,
+  activateParticipant,
+  signinParticipants,
+  getAllEvents,
+  getDetailEvent,
+};
