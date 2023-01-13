@@ -131,86 +131,6 @@ const getAllOrder = async (req) => {
   return result;
 };
 
-const checkoutOrder = async (req) => {
-  const { event, personalDetail, payment, tickets } = req.body;
-  const checkingEvent = await Events.findOne({ _id: event });
-
-  if (!checkingEvent) {
-    throw new NotFoundError("Tidak ada acara dengan id: " + event);
-  }
-
-  const checkPayment = await Payments.findOne({ _id: payment });
-
-  if (!checkPayment) {
-    throw new NotFoundError(
-      "Tidak ada metode pembayaran dengan id: " + payment
-    );
-  }
-
-  //  LOgikanya code dibawah
-  //await tickets.forEach((tic) ini adalah perulangan, di model orders
-  // sedangkan  checkingEvent.tickets.forEach((ticket) => adalah perulangan di model events
-  // terus di bandingin  antara orderDetailSchema (dimodel orders) sama ticketCategoriesSchema (dimodel event)
-  // totalOrderTicket itu kan kita bisa beli 2 atau 3 dengan tipe yang berbeda,
-  // jadi maksudnya tiket yang berada didalam totalOrderTicket adalah ticket yang berberda type
-  // sedangkan kalo sumTicket itu adalah total dari type tipe yang sama.
-  // kemudian sumTicket di masukan kedalam totalOrderTicket
-  // totalPay adalah menghitung semua totalOrderTicket yang memiliki
-  // type yang berbeda, dengan harga ticketnya.maka dapat hasil berapa yang
-  // harus di bayarkan dari total tiket yang di pesan.
-  let totalPay = 0;
-  totalOrderTicket = 0;
-
-  await tickets.forEach((tic) => {
-    checkingEvent.tickets.forEach((ticket) => {
-      if (tic.ticketCategories.type === ticket.type) {
-        if (tic.sumTicket > ticket.stock) {
-          throw new NotFoundError("Stock event tidak mencukupi");
-        } else {
-          ticket.stock -= tic.sumTicket;
-          totalOrderTicket += tic.sumTicket;
-          totalPay += tic.ticketCategories.price * tic.sumTicket;
-        }
-      }
-    });
-  });
-
-  // menyimpan perubahan yang telah dilakuakan
-  // makan model order yang memiliki atribute stock maka akan berkurang.
-  await checkingEvent.save();
-
-  // menyimpan history event, kita dapat datanya dari  checkingEvent
-  // kita buat dulu dengan variabel history event kemudain kita masukan kedalam Orders
-
-  const historyEvent = {
-    title: checkingEvent.title,
-    data: checkingEvent.date,
-    about: checkingEvent.about,
-    tagline: checkingEvent.tagline,
-    keyPoint: checkingEvent.keyPoint,
-    venueName: checkingEvent.venueName,
-    tickets: tickets,
-    image: checkingEvent.image,
-    category: checkingEvent.category,
-    talent: checkingEvent.talent,
-    organizer: checkingEvent.organizer,
-  };
-  // memasukan data data kedalam Database orders
-  const result = new Orders({
-    date: new Date(),
-    personalDetail: personalDetail,
-    totalPay,
-    totalOrderTicket,
-    orderItems: tickets,
-    participants: req.participant.id, // dari user participant yang login
-    event,
-    historyEvent,
-    payment,
-  });
-
-  await result.save();
-  return result;
-};
 module.exports = {
   signupParticipant,
   activateParticipant,
@@ -218,5 +138,4 @@ module.exports = {
   getAllEvents,
   getDetailEvent,
   getAllOrder,
-  checkoutOrder,
 };
