@@ -9,15 +9,7 @@ const {
 } = require("../../errors");
 const { createJWT, createTokenParticipant } = require("../../utils");
 
-const { otpMail, orderMail } = require("../mail");
-
-// const getAllEvents = async (req) => {
-//   const result = await Events.find({ statusEvent: "Published" })
-//     .populate("category")
-//     .populate("image")
-//     .select("_id title date tickets venueName");
-//   return result;
-// };
+const { otpMail } = require("../mail");
 
 const signupParticipant = async (req) => {
   const { firstName, lastName, email, password, role } = req.body;

@@ -8,6 +8,7 @@ const {
   getDetailsEventsLandingPage,
   getAllDashboard,
   Checkout,
+  buktiTransaksi,
 } = require("./controller");
 
 // jadi sebelum menjalankan fungsi getAllDashboar,
@@ -21,4 +22,5 @@ router.get("/events", getAllEventsLandingPage);
 router.get("/orders", authenticateParticipant, getAllDashboard);
 router.post("/checkout", authenticateParticipant, Checkout);
 router.get("/events/:id", getDetailsEventsLandingPage);
+
 module.exports = router;
