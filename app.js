@@ -16,7 +16,7 @@ const authCMSRouter = require("./app/api/v1/auth/router");
 const ordersRouter = require("./app/api/v1/orders/router");
 const participantsRouter = require("./app/api/v1/participants/router");
 const paymentsRouter = require("./app/api/v1/payments/router");
-// const userRefreshTokenRouter = require('./app/api/v1/userRefreshToken/router');
+const userRefreshTokenRouter = require("./app/api/v1/userRefreshToken/router");
 const v1 = "/api/v1";
 
 // error Handling
@@ -27,7 +27,7 @@ app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 // express.urlencoded : extend :false .
-app.use(express.urlencoded({ extended: false })); 
+app.use(express.urlencoded({ extended: false }));
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
@@ -46,6 +46,7 @@ app.use(`${v1}/cms`, organizersRouter);
 app.use(`${v1}/cms`, authCMSRouter);
 app.use(`${v1}/cms`, ordersRouter);
 app.use(`${v1}/cms`, paymentsRouter);
+app.use(`${v1}/cms`, userRefreshTokenRouter);
 app.use(`${v1}`, participantsRouter);
 
 // pengunaan error handling, tidak di bolehin di tarok di atas router, karena nanti dijalankan terlebih dahulu.
