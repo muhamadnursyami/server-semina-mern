@@ -110,6 +110,9 @@ const getAllEvents = async (req) => {
     .populate("category")
     .populate("image")
     .select("_id title date tickets venueName");
+  console.log("result get All Event");
+  console.log(result);
+
   return result;
 };
 
