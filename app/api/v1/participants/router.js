@@ -9,6 +9,7 @@ const {
   getAllDashboard,
   Checkout,
   buktiTransaksi,
+  getAllPayment,
 } = require("./controller");
 
 // jadi sebelum menjalankan fungsi getAllDashboar,
@@ -22,5 +23,6 @@ router.get("/events", getAllEventsLandingPage);
 router.get("/orders", authenticateParticipant, getAllDashboard);
 router.post("/checkout", authenticateParticipant, Checkout);
 router.get("/events/:id", getDetailsEventsLandingPage);
+router.get("/payments/:organizer", authenticateParticipant, getAllPayment);
 
 module.exports = router;
